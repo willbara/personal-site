@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bara's Bar</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+</head>
+<body style="font-family: 'Times New Roman', Times, serif; margin: 0; padding: 20px; text-align: center;">
+    
+    <!-- Navigation -->
+    <nav style="margin-top: 50px; margin-bottom: 40px;">
+        <a href="#about" style="margin: 0 15px; text-decoration: none; color: blue;">About</a>
+        <a href="#gear" style="margin: 0 15px; text-decoration: none; color: blue;">Gear</a>
+        <a href="#hobbies" style="margin: 0 15px; text-decoration: none; color: blue;">Hobbies</a>
+        <a href="#blog" style="margin: 0 15px; text-decoration: none; color: blue;">Blog</a>
+        <a href="#contact" style="margin: 0 15px; text-decoration: none; color: blue;">Contact</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <h1 style="font-weight: bold; margin-bottom: 20px;">Bara's Bar</h1>
+        
+        <!-- Placeholder Image -->
+        <img 
+        src="assets/bear-coffee.webp" 
+        alt="Bara's Bar"
+            style="
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 30%;
+            max-width: 600px;
+            height: auto;">
+        
+        <!-- Clock -->
+        <div id="clock" style="font-size: 18px; margin-top: 10px;"></div>
+    </main>
+
+    <!-- Clock Script -->
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const cstTime = now.toLocaleString('en-US', { 
+                timeZone: 'America/Chicago',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            const cstDate = now.toLocaleString('en-US', { 
+                timeZone: 'America/Chicago',
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('clock').innerHTML = cstDate + '<br>' + cstTime + ' CST';
+        }
+        
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+
+</body>
+</html>
