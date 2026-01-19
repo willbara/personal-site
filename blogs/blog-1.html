@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Bara's Bar</title>
+    <title>About - Bara's Bar</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
@@ -26,17 +26,14 @@
 
     <script>
         const markdown = `
-# Blog
+# Blog title
+*Posted: Monday, January 19th, 2026*
 
-Welcome to my blog. This is where I share my amazing ideas.
+This is example text lol. Lorem ipsum semter tet something.
 
----
+### Ok. That's crazy.
 
-## Posts
-
-- [Post Title 1](blogs/blog-1.html) - *January 2026*
-
----
+Why is that crazy? Let that sink in.
         `;
 
         document.getElementById('content').innerHTML = marked.parse(markdown);
