@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Point and Scan - Bara's Bar</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body style="font-family: 'Times New Roman', Times, serif; margin: 0; padding: 20px; text-align: center;">
+
+    <!-- Navigation -->
+    <nav style="margin-top: 50px; margin-bottom: 40px;">
+        <a href="../index.html" style="margin: 0 15px; text-decoration: none; color: blue;">Home</a>
+        <a href="../about.html" style="margin: 0 15px; text-decoration: none; color: blue;">About</a>
+        <a href="../gear.html" style="margin: 0 15px; text-decoration: none; color: blue;">Gear</a>
+        <a href="../hobbies.html" style="margin: 0 15px; text-decoration: none; color: blue;">Hobbies</a>
+        <a href="../blog.html" style="margin: 0 15px; text-decoration: none; color: blue;">Blog</a>
+        <a href="../contact.html" style="margin: 0 15px; text-decoration: none; color: blue;">Contact</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="max-width: 600px; margin: 0 auto; text-align: left;">
+        <div id="content"></div>
+    </main>
+
+    <script>
+        const markdown = `
+# Point and Scan
+*Posted: June 6th, 2026*
+
+Not too long ago, I made the jump from Windows to Linux. A full migration  - wiping the drive, setting up a fresh environment, and then spending the better part of an afternoon logging back into everything I'd accumulated over the years. Streaming services. Password managers. Dev tools. Cloud storage. The usual suspects that remind you just how deeply embedded into the internet you really are.
+
+It was during this tedious login marathon that I noticed something. Some apps and services would greet me with the option to scan a QR code from my phone to log in. One scan, and I was in. No typing, no copy-pasting tokens, no fumbling with a tiny keyboard. Just: point, scan, done. Other services didn't offer it at all, opting instead for the classic username and password combo that I've typed so many times it's basically muscle memory at this point.
+
+That little discrepancy stuck with me.
+
+<h3 style="text-align: center;">Why does this little square make me so happy?</h3>
+
+QR codes have been around since 1994. Denso Wave, a Toyota subsidiary, created them for tracking automotive parts. Thirty-something years later, they're on restaurant tables, bathroom walls, business cards, coffee cups, and apparently, my heart.
+
+The thing about QR codes is that they are a genuinely elegant solution to a pretty fundamental problem: how do you move information between two places, quickly, reliably, and without needing a shared platform to do it? You've got a phone and a screen in front of you. That's it. That's the whole setup. You don't need Bluetooth paired, no NFC tap required, no account linking, no "download our app first." It's as frictionless as technology gets.
+
+When I see an app implement QR code login, I actually smile a little. I'm not kidding. It's that small moment where a developer clearly said, "What if this was easier?"  - and then made it easier. It respects your time. That deserves recognition.
+
+<h3 style="text-align: center;">They're doing more than you think</h3>
+
+Here's what I love most about QR codes: the range. The sheer, absurd range of what they can quietly carry.
+
+You've got the obvious ones. Scan to open a link. Scan to connect to Wi-Fi without typing a password that involves three capital letters, a symbol, and someone's cat's name. Scan to pay. Scan to see the menu because, apparently, laminated paper is dead now.
+
+But then you get into the good stuff. TOTP secrets for two-factor authentication. Provisioning codes that configure an entire app in one scan. Crypto wallet addresses. Encrypted messages. SSH public keys, if you're feeling theatrical. Passkeys being transferred between devices. Configuration data for IoT devices that would otherwise require digging through a manual you definitely threw away. Shared contact cards. Event tickets. Wi-Fi credentials on a guest network printed on an actual physical card. App deep links that bypass the browser entirely.
+
+It's a lot of payload for a little square. There's something funny and kind of wonderful about the fact that the same format a Tokyo parking garage used in 1994 is now quietly underpinning parts of modern authentication infrastructure. It didn't need to reinvent itself. It just kept being useful.
+
+<h3 style="text-align: center;">Okay, but what's the catch?</h3>
+
+I'd be doing you a disservice if I didn't mention the downsides. And there are some real ones.
+
+QR code phishing is a thing. A legitimate thing. It's even got a name: quishing. The attack is pretty simple  - you swap out a legitimate QR code with one that points to a fake login page, or one that silently triggers a download. Because humans have been trained to just... scan stuff without thinking too hard about it, the attack vector works shockingly well. You can't hover over a QR code the way you can a suspicious link. Your eye can't read it. You're trusting the context around it more than the code itself.
+
+That said, this isn't really a QR code problem. It's a people trusting things they shouldn't problem, which, let's be honest, predates QR codes by several thousand years.
+
+There's also the dependency on having a second device. QR code logins specifically assume you have a phone in hand, unlocked, and running the right app. For people without a phone, or without a reliable second screen, that experience immediately breaks down. It's a convenience feature that requires a certain baseline of setup to actually be convenient.
+
+And yes, there is something faintly ironic about a privacy-minded person enthusiastically endorsing a flow that typically involves a camera, an app, and usually some server-side session management. I'm aware. But we've been over this  - there is no such thing as true privacy, only peace of mind. If the QR code login is reducing my chances of a credential stuffing attack by keeping my password out of a keyboard entirely? I'll take that trade.
+
+<h3 style="text-align: center;">So where's the adoption?</h3>
+
+Back to my Linux migration. The services that had QR code logins felt noticeably more polished. Not because QR codes are flashy  - they're anything but. It's more that implementing one signals a certain thoughtfulness about the user experience. It says: we considered the fact that typing is annoying.
+
+The ones that didn't have it? Fine. Functional. But a little disappointing in the way that it's disappointing when a restaurant doesn't have the thing you wanted off the menu. You'll order something else. You'll be fine. You just wish it was there.
+
+I genuinely don't understand why the adoption isn't more universal. The spec is open. The tooling is free. Generating a QR code in code is, famously, not hard. Libraries exist in every language. There's no licensing wall, no platform gate, no reason a developer couldn't add a "log in with QR" option other than it simply not being prioritized.
+
+Which, again, is fine. But come on.
+
+<h3 style="text-align: center;">Point, scan, done</h3>
+
+I'm not here to tell you QR codes will solve the world's problems. They won't. But there's a category of small, clever, interoperable technologies that just quietly make life a bit smoother  - and QR codes sit near the top of that list. They've been around long enough to be boring and are still useful enough to be genuinely exciting when implemented well.
+
+Every time I see a new app or service reach for the QR code  - whether it's for login, for 2FA setup, for sharing a config, for literally anything  - I feel something close to appreciation. It's a small vote for frictionless design. For thinking about the person on the other side of the screen.
+
+Developers: more of this, please. Put QR codes on things. Unnecessary ones, even. I'll take it.
+
+#technology #privacy #showerthought
+        `;
+
+        document.getElementById('content').innerHTML = marked.parse(markdown);
+    </script>
+
+</body>
+</html>
