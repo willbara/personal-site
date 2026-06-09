@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Bara's Bar</title>
+    <title>My PC Is Now Smarter Than Me - Bara's Bar</title>
     <link rel="icon" type="image/png" href="../assets/favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
@@ -26,14 +26,36 @@
 
     <script>
         const markdown = `
-# Blog title
-*Posted: Monday, January 19th, 2026*
+# My PC Is Now Smarter Than Me
+*Posted: October 6th, 2025*
 
-This is example text lol. Lorem ipsum semter tet something.
+I recently built a new computer, something I'd been itching to do for a long time. Like most enthusiasts, I started with a modest gaming rig… but over time, I began craving more workstation-grade horsepower. After saving for a long time, I finally put together my "dream build": a Ryzen 9 7900X, an RTX 5070 Ti, and a handful of other pricey but delightful treats, such as 32GB of DDR5 RAM, which was, if I might add, awesome.
 
-### Ok. That's crazy.
+I've never had this much computing power before, and it's opened a ton of new doors. I went from barely running Docker containers or VMs to gaming in 1440p while compiling projects in the background. But the biggest door that's opened lately? Large language models.
 
-Why is that crazy? Let that sink in.
+Now, I'm still on the fence about whether LLMs have been a net positive or negative for everyday life. I'm not alone in thinking that major tech companies are getting way too powerful  - hurting creative professions or, somehow, even managing to poison water and spike my electric bill. But the nerd in me can't help being fascinated. If you'd told me ten years ago that I'd be chatting with a robot about anything and getting back coherent answers, I would've lost my mind. There's something deeply satisfying about discussing ridiculous hypotheticals like Lord of the Rings characters duking it out on Mustafar, or debating whether milk-based hot chocolate really beats water.
+
+Running local LLMs wasn't even an option with my old PC  - I simply didn't have the VRAM. Now? I can actually get these things going.
+
+As someone who's always been privacy-minded, the idea of a local "second brain" hooked me right away. Privacy by design means peace of mind and the freedom to ask anything without worrying about who's watching. I found open-source tools like Ollama, llama.cpp, and Open WebUI, which strike a perfect balance between privacy and usability. My frontend of choice is Jan AI, a clean and friendly open-source option that just works.
+
+That discovery kicked off my deep dive into the AI model rabbit hole: quantization, parameter sizes, context windows, and the endless tug-of-war between speed and complexity. I've followed LLMs since ChatGPT launched in 2022, but I'd never explored the DIY side. Models like Mistral, Qwen, Llama, and GPT-OSS have been my recent playground. Mistral can be a little stubborn when it comes to formatting, but Qwen has impressed me across the board. Fine-tuning my own models? That's a whole other rabbit hole I'm not quite ready to fall into yet.
+
+The culture around all this is... something. You'll see people bragging like, "My abliterated-megafart-qwen-deepseek combo scores a 78.4% percentile on the gigashit scale!" The nomenclature desperately needs work, guys.
+
+Once you realize different models excel at different things, and that nothing is exempt from hallucinations or gaps in training, it's hard not to start hoarding. I've already amassed a little over 300GB of models, and I'm actively culling despite having 5TB of storage split across drives. Since everyone's use case differs, there's no one-size-fits-all.
+
+Running these models locally is sometimes as simple as double-clicking a button. Sometimes you do need to juggle VRAM limits, quantization formats like Q4_K_M or Q8_0, and optimize thread counts to squeeze out every bit of speed without choking your system. Lately, I've also been experimenting with scale. My new PC can handle fairly large, high-quality models without much trouble, but it's been eye-opening to see how far I can push things on my MacBook Air, which only has 8GB of RAM.
+
+It's challenging, painfully slow at times, but oddly satisfying to see just how small you can go while keeping the responses surprisingly coherent. It's the kind of tinkering that scratches the same itch as overclocking used to. I'm still limited by my 16GB of VRAM on my main machine, though  - enough to natively run 14B–20B parameter models with minimal offloading, but the 70B–120B heavyweights? It's like watching paint dry.
+
+And here's the thing... I'm not thrilled about the growing sprawl of data centers fueling global inefficiency. That's another reason I love the idea of running models locally. It's empowering. The technology is fascinating and genuinely fun to tinker with. I just hope it keeps evolving in a smarter, more sustainable direction.
+
+I've had a blast firing up my favorite Qwen 3 8B model and tossing it random nonsense like, "How is 'either' actually pronounced?" or "Why isn't Wednesday spelled 'Wensday'?"
+
+It's nerdy, it's pointless, and it's awesome.
+
+*#privacy #technology*
         `;
 
         document.getElementById('content').innerHTML = marked.parse(markdown);
