@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finally, the Homelab - Bara's Bar</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body style="font-family: 'Times New Roman', Times, serif; margin: 0; padding: 20px; text-align: center;">
+
+    <!-- Navigation -->
+    <nav style="margin-top: 50px; margin-bottom: 40px;">
+        <a href="../index.html" style="margin: 0 15px; text-decoration: none; color: blue;">Home</a>
+        <a href="../about.html" style="margin: 0 15px; text-decoration: none; color: blue;">About</a>
+        <a href="../gear.html" style="margin: 0 15px; text-decoration: none; color: blue;">Gear</a>
+        <a href="../hobbies.html" style="margin: 0 15px; text-decoration: none; color: blue;">Hobbies</a>
+        <a href="../blog.html" style="margin: 0 15px; text-decoration: none; color: blue;">Blog</a>
+        <a href="../contact.html" style="margin: 0 15px; text-decoration: none; color: blue;">Contact</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="max-width: 600px; margin: 0 auto; text-align: left;">
+        <div id="content"></div>
+    </main>
+
+    <script>
+        const markdown = `
+# Finally, the Homelab
+*Posted: June 13th, 2026*
+
+Homelabs and the movement behind self-hosting have probably been one of my more long-standing interests. I'd grown a bit of a habit of bookmarking and planning it out instead of actually biting the bullet and getting started. I wish I had started sooner, because it has been nothing short of a well-placed time crunch. It's opened up a ton of interesting avenues of tech I'd not been able to fully test and mess with, and it has primarily allowed me to fulfill some goals. Such as creating local game servers. Of course. But also start doing things like purchasing a domain, fiddling with Cloudflare, or just in general, do more network fiddling.
+
+I'd been eyeing a Lenovo ThinkCentre M720q Tiny for a while. Small form factor, low power draw, a PCIe slot for later. Found a seller on eBay with a few listed, and on a whim sent them a message  - half-serious, asking if they'd throw in some ESD bags or maybe a riser for that PCIe port. The kind of ask you send without expecting much back.
+
+The response I got was anything but a brush-off. The seller knew exactly what they were selling. They flagged that a new batch with risers already installed was going in that night, ran memtest86 on every RAM stick before shipping, had real opinions on Intel AMT as a security concern, and proactively pointed out that the M720q's lack of AMT support was actually a selling point for someone with my priorities. One casual message turned into a proper back and forth about specs, use cases, and security tradeoffs. Good conversation. The kind you genuinely don't expect from an eBay listing.
+
+When it came to price, they offered to shave the config down to a single 16GB stick  - upgrade the RAM later on my own time  - and land the total at $245 shipped. Small gesture, completely unprompted. That was it. Card in hand.
+
+For the software side, I went with Proxmox VE. I'd looked at friendlier entry points like Zima OS, but that felt like cheating myself out of the point. I wanted the real experience  - a proper type-1 hypervisor, LXC containers, understanding how it all actually fits together. Not something that abstracts away the complexity before I've had a chance to learn it.
+
+<h3 style="text-align: center;">What's actually running on it</h3>
+
+Proxmox lets me carve the machine into lightweight Linux containers. Most services get their own, and spinning something new up takes maybe five minutes once you know the pattern.
+
+The privacy angle was always going to be part of this. The same instinct that had me running local LLMs and switching to RSS feeds was always going to ask, eventually: *why am I paying someone else to host my own stuff on their hardware?* So the foundation reflects that. AdGuard Home handles DNS with a local Unbound resolver underneath it  - no queries going out to Google or Cloudflare by default. Nginx Proxy Manager sits in front of everything with a wildcard TLS certificate covering all my subdomains. Tailscale handles remote access, so nothing is exposed directly through the firewall.
+
+On top of that sits a Docker host running the services I actually use. A Homepage dashboard giving me a live view of everything. And the first goal I checked off the list  - a Minecraft server, accessible publicly through a Playit.gg tunnel. Two modpacks running simultaneously, which probably says something about my priorities.
+
+That particular bit of setup  - local DNS, subdomains, a reverse proxy with a proper cert  - taught me more about how DNS actually works than I'd picked up in years of half-paying attention to it.
+
+<h3 style="text-align: center;">How it's been going</h3>
+
+Pretty well, honestly. Having a box that just *stays on* and does its job quietly is a specific kind of satisfaction  - more so than I expected. Checking the dashboard and seeing everything green is a small but consistent pleasure.
+
+The less good: DNS. DNS was the first problem. DNS was the second problem. DNS continues to make recurring appearances. I've rebuilt parts of the stack more than once because I got too clever with something upstream and broke the chain. "It works on my main PC" and "it works as a headless service at 3am" are two very different statements that I've had to learn to treat separately.
+
+The homelab is never finished. There's always one more service to add, one more setting to revisit, one more "I'll just quickly..." that quietly eats an evening. Right now the queue has a password manager, a music server for my FLAC library, and a backup solution before the stack gets much bigger without one.
+
+<h3 style="text-align: center;">Where things stand</h3>
+
+Eight containers running, several active subdomains. Two Minecraft servers accessible publicly. Uptime has been solid. CPU and RAM headroom are both comfortable  - the Glances widget on the dashboard keeps track of that, which is either reassuring or just another thing to look at. Probably both.
+
+I woke up that morning, pocket knife in hand, when that box came up. When I finally got it to where I wanted, set up with the initial containers I made, it was the next day's evening. And I was late for a dentist appointment.
+
+#homelab #technology #privacy
+        `;
+
+        document.getElementById('content').innerHTML = marked.parse(markdown);
+    </script>
+
+</body>
+</html>
