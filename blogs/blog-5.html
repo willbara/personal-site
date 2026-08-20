@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Migration - Bara's Bar</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body style="font-family: 'Times New Roman', Times, serif; margin: 0; padding: 20px; text-align: center;">
+
+    <!-- Navigation -->
+    <nav style="margin-top: 50px; margin-bottom: 40px;">
+        <a href="../index.html" style="margin: 0 15px; text-decoration: none; color: blue;">Home</a>
+        <a href="../about.html" style="margin: 0 15px; text-decoration: none; color: blue;">About</a>
+        <a href="../gear.html" style="margin: 0 15px; text-decoration: none; color: blue;">Gear</a>
+        <a href="../hobbies.html" style="margin: 0 15px; text-decoration: none; color: blue;">Hobbies</a>
+        <a href="../blog.html" style="margin: 0 15px; text-decoration: none; color: blue;">Blog</a>
+        <a href="../contact.html" style="margin: 0 15px; text-decoration: none; color: blue;">Contact</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="max-width: 600px; margin: 0 auto; text-align: left;">
+        <div id="content"></div>
+    </main>
+
+    <script>
+        const markdown = `
+# Full Migration
+*Posted: August 19th, 2026*
+
+The switch to maining Linux across all my devices was not a rollout that happened overnight. Though I'd made sure that my laptops always had some distro running in place of Windows. With the many cultures and reasons behind preferring it for a laptop computer, I could never make the switch on my desktop. It was the system that I needed to be entirely reliable at all times. Whether it was the gaming performance, the software compatibility, or the comfort zone of an ecosystem I'd gotten used to, I couldn't tell you why I stayed on it for so long.
+
+I'd like to argue that I was probably the one person in the space that didn't have issues with Windows, as many would like to call it problematic or broken half the time. I was pretty content.
+
+One of the biggest reasons the switch took as long as it did was partly because NVIDIA cards had one too many issues with Linux. And the thing about desktop Linux is that it's an entirely different story versus laptop Linux. Hear me out: One optimizes for battery life and "does it suspend properly." The other optimizes for raw performance and "will this break my GPU drivers at 11 PM." I'd been circling the desktop swap for over a year, mostly by bookmarking things and not doing them. Sound familiar?
+
+<h3 style="text-align: center;">Distro (S)hopping</h3>
+
+So before touching the install media, I did what any reasonable person does before a big decision: I read around and checked the stats. Five contenders made the cut.
+
+**CachyOS**  - A solid pick that almost had me fully. Benchmark darling. BORE scheduler, packages compiled with modern instructions, pretty aggressive optimization that matters. The biggest caveat for me was that it was Arch underneath. No hate to my Arch bros, but I wasn't looking for that level of upkeep for a system I need operational 24/7. Plus, sorry, I'm not a fan of the AUR.
+
+**Nobara**  - The "Fedora for gamers," built by the guy behind GE-Proton. Real nice! Prebuilt gaming kernel, drivers handled for you, zero config needed. It was tempting, like a meal kit service. But I, as any prideful Linux fan, had my own opinions. However, I do try to suggest this to friends that want something reasonable.
+
+**EndeavourOS**  - Similar story with CachyOS. I eyeballed it for a bit, as I've heard only good things from some less sane friends and coworkers. Ultimately, it didn't have what I was looking for.
+
+**NixOS**  - Yes. Declarative, reproducible, your entire system defined neatly in some config files you can version control. Something I was genuinely on the edge of, and have used on some laptop systems. But it was, again, just shy of too much maintaining for what I wanted.
+
+**Fedora**  - Ol' reliable. The one I already was fond of from the many laptops I used it with. Boring. Stable. And almost every tweak the others had I could reproduce.
+
+Here's the thing that actually decided it, and it wasn't performance. It was Secure Boot.
+
+Custom kernels, the thing that makes CachyOS fast and Nobara convenient, complicated Secure Boot. And Secure Boot wasn't an optional tweak to me. Kernel-level anti-cheat for some games. My personal security concerns. And dual boot for the one or two things I needed Windows for still. Yes, I could virtualize. Maybe something I'll figure out later. So: Fedora 44, KDE Plasma. The known quantity, with everything else added back in by hand.
+
+<h3 style="text-align: center;">The Install</h3>
+
+My graphics card is an RTX 5070 Ti. Which means proprietary NVIDIA kernel modules, for the Blackwell architecture, aren't even supported by design. Open kernel modules only. Fine, I can work with that. RPM Fusion free and nonfree, akmod-nvidia, xorg-x11-drv-nvidia-cuda, pulling the 595 driver branch. Except Fedora 44 had a known Rawhide repo bug quietly resting in RPM Fusion that I had to manually hunt down and disable before anything would install cleanly. Then DNF5 decided groupupdate doesn't exist anymore since it's group upgrade now, with a space, no announcement, just a wall of "unknown command" waiting for me. Cool.
+
+Once the driver actually built, everything else was pretty smooth at first. Just needed modinfo -F license nvidia to say "Dual MIT/GPL." Then I broke it myself  - I ran a command to regenerate the signing key after the modules were already built against the old one. A mismatch meant that Secure Boot refused to load NVIDIA at all. The fix was a forced rebuild against the kernel, re-signing everything from scratch. Honestly. Could've been worse.
+
+Everything after the driver was less dramatic, just a long list of "make stock Fedora feel like the gaming distros without becoming one." Steam, Lutris, Heroic, GameMode, MangoHud, GOverlay, the usual selections. GE-Proton through ProtonUp-Qt instead of stock Proton. Microsoft's core fonts, which come from an RPM old enough that modern package tools reject its checksums by default  - you have to explicitly tell it to trust a file from 2011. ananicy-cpp for the auto-renice behavior Nobara bakes in natively. Btrfs snapshots through Snapper instead of Timeshift, since Fedora already defaults to Btrfs and I might as well use what's there. Call me out if I'm wrong about this.
+
+<h3 style="text-align: center;">Where I'm at</h3>
+
+It's genuinely been a very stable experience so far. Riced up my system (gruvbox ftw) and I'm sailing happily. Desktop Linux has been a very comfortable environment for me. A couple of problems here or there, but it's infinitely more rewarding than a generic, debloated Windows install. And don't get me started on the snappiness. Oh, the snappiness. Love it.
+
+Gaming on Linux had a rough journey, but it's improved significantly in recent years. Surprisingly better experience with the games I play too.
+
+Still don't like PipeWire.
+
+#linux #technology #gaming
+        `;
+
+        document.getElementById('content').innerHTML = marked.parse(markdown);
+    </script>
+
+</body>
+</html>
