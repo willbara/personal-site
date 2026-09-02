@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous Last Words - Bara's Bar</title>
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body style="font-family: 'Times New Roman', Times, serif; margin: 0; padding: 20px; text-align: center;">
+
+    <!-- Navigation -->
+    <nav style="margin-top: 50px; margin-bottom: 40px;">
+        <a href="../index.html" style="margin: 0 15px; text-decoration: none; color: blue;">Home</a>
+        <a href="../about.html" style="margin: 0 15px; text-decoration: none; color: blue;">About</a>
+        <a href="../gear.html" style="margin: 0 15px; text-decoration: none; color: blue;">Gear</a>
+        <a href="../hobbies.html" style="margin: 0 15px; text-decoration: none; color: blue;">Hobbies</a>
+        <a href="../blog.html" style="margin: 0 15px; text-decoration: none; color: blue;">Blog</a>
+        <a href="../contact.html" style="margin: 0 15px; text-decoration: none; color: blue;">Contact</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main style="max-width: 600px; margin: 0 auto; text-align: left;">
+        <div id="content"></div>
+    </main>
+
+    <script>
+        const markdown = `
+# Famous Last Words
+*Posted: September 2nd, 2026*
+
+I had just told a friend's friend that the Linux desktop experience has been seamless. I even made a blog recently talking about exactly that. Universe, appreciated. Universe, noted. Universe, waited exactly two weeks before deciding that was an invitation.
+
+It started the way these things always start: an offline update. Not even one I was nervous about  - Fedora's had my back for months at that point, through kernel bumps, a driver rebuild here, a stray dependency there. This one just... stopped. Five percent. Sitting there. Progress bar frozen like it had seen something. I gave it time, because giving things time is the correct, patient, mature response to a stuck update, and I am nothing if not correct, patient, and mature. I tried the sanctioned graceful-shutdown methods. All of them. Politely. Multiple times. It did not care.
+
+Eventually you run out of patient options and you're left with one increasingly less patient one. Forced shutdown. And if you've ever wondered what happens when you yank power out from under an offline updater mid-transaction, on packages that include your kernel and half your system's shared libraries, the answer is: nothing good, immediately, and then a much longer answer over the following several hours that I did not have penciled into my schedule.
+
+Every kernel refused to boot. Every one. Including the rescue kernel, which is supposed to be the "in case of emergency, break glass" option, the one thing that's meant to work when nothing else does. It panicked too. That's the moment you know you're not dealing with a normal bad update. You're dealing with something that reached down and touched the foundation.
+
+So: live USB. The default answer to "my computer won't boot" since roughly the dawn of computers not booting. I want to say I calmly and methodically diagnosed the problem from there, but the honest version involves an embarrassing number of \`lsblk -f\` calls, mounting my own \`/boot\` partition directly on top of my root filesystem instead of inside it  - a mistake that sounds obvious in hindsight and felt very obvious in real time, about four seconds after I did it  - and generally re-learning, at an unfortunate hour, how btrfs subvolumes work when you actually need them to.
+
+Small mercy: \`e2fsck\` and \`btrfs check\` both came back clean. The disk itself hadn't betrayed me. Something further up the stack had.
+
+That something turned out to be, functionally, everything. Chrooting in and trying to run \`rpm\` got me a wall of "cannot open shared object file" for \`libgcc_s\`, because the interrupted transaction had apparently been mid-stride through replacing it when the power died. Fixed that by borrowing a working copy from the live environment, which is a phrase I will be saying in my sleep for a while. Then it was \`libstdc++\`. Then \`glib2\`. Then \`libelf\`, this time hiding behind a broken symlink that pointed at nothing, because apparently one flavor of missing file wasn't going to be enough tonight. Each one, same routine: borrow it live, get \`dnf\` breathing again, move to the next collapsed pillar.
+
+Once \`dnf\` could actually run, the real scope became visible, and it was not small. Hundreds of packages sitting in the database as both their old and new versions simultaneously, because the transaction died before it could clean up after itself. \`dnf check\` politely informed me of dozens of problems across dozens of packages, like a doctor reading off a chart. A \`distro-sync\` attempt got blocked because it wanted to remove my own bootloader, which felt rude. Another attempt failed on a wall of 32-bit library version mismatches that I will spare you, mostly because explaining multilib conflicts at length is how friendships end. I deleted the offending i686 packages outright and told the process to just let them come back correctly afterward, because at that point in the night, "we'll fix it properly on the way back" was doing a lot of load-bearing work in my decision-making.
+
+And then, buried in the middle of all of it, the actual answer. \`rpm -q kernel-core\` listed three kernel versions installed. \`/boot\` had boot files for two of them. The third, the one GRUB was defaulting to, had nothing. No vmlinuz, no initramfs, nothing. Just a database entry insisting it existed, and a bootloader dutifully trying to load a kernel that, as far as the filesystem was concerned, had never actually finished arriving. That's the whole story, right there. That's your five percent. It wasn't cursed. It was just incomplete, and nobody told GRUB.
+
+Deleted the ghost kernel. Regenerated initramfs for the two that were actually whole. Rebuilt the GRUB config, after being scolded by \`grub2-mkconfig\` for targeting the wrong file, which, fair, I should've remembered that one. Rebooted, genuinely hopeful for the first time in hours.
+
+And landed directly into a wall of red text. "Unable to fix SELinux security context" for what felt like every device node my kernel had ever heard of, capped off with "Failed to allocate manager object," which is systemd's way of saying it gave up entirely before it even got to introduce itself. Reinstalling several hundred packages in one sitting apparently does a number on SELinux's bookkeeping of what's supposed to be labeled as what  - badly enough to take PID 1 down with it.
+
+The fix is simple in hindsight: boot with SELinux off just long enough to flip it to permissive and flag a full relabel, then let it grind through every file on the disk. In practice, it took me two attempts at editing a GRUB boot line by hand, at a small font, at 3-something in the morning, because I put \`selinux=0\` on the wrong line both times. Not the same wrong line twice, somehow. Two different wrong lines. A small, personal achievement.
+
+Relabel ran. System booted. Genuine, non-ironic joy for about ninety seconds, right up until I noticed I had no audio devices, no NVIDIA driver, and my CPU and case fans had quietly vanished from CoolerControl, leaving only the GPU's fans behind like the last three chairs at a party that ended a while ago. Every one of these turned out to be some flavor of the same root problem: things tied to a specific kernel version that hadn't been rebuilt for the specific kernel version I'd landed on. \`akmod-nvidia\`, rebuilt. \`kernel-modules-extra\`, reinstalled for the current kernel specifically. And the fans  - the fans were the best one, because my board's Super I/O chip has never played nice with the mainline driver, which I apparently already knew, because I'd pulled a proper out-of-tree one from GitHub for exactly this reason at some point I have no specific memory of. Found the leftover DKMS entry still sitting there, still built for the previous kernel, like a note I'd left myself and then completely forgotten writing. Rebuilt it. Fans came back. All of them, correctly, without also loading the one other driver that's known to misread the same chip and mangle its fan-control registers if you let it. Small victories.
+
+Everything works now. Audio, NVIDIA, fans, boot, the works. I even finally sat down and wired up automatic Snapper snapshots on every \`dnf\` transaction. Turns out having Btrfs and saying the word "Snapper" out loud is not the same as actually configuring the hooks that make it useful. Noted. Corrected. Should've done it before tonight, not after.
+
+So, for the record, updated statement: the Linux desktop experience has been seamless, provided you don't count the one night it very much wasn't, in ways that touched nearly every layer of the system at once, over the better part of several hours, for the crime of losing power at exactly the wrong five percent. Everything else, though? Genuinely fine. Great, even. I stand by the earlier blog post. I just, apparently, needed to earn it a little harder than I let on.
+
+#linux #technology
+        `;
+
+        document.getElementById('content').innerHTML = marked.parse(markdown);
+    </script>
+
+</body>
+</html>
